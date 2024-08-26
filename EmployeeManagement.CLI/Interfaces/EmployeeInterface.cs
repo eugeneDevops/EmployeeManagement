@@ -29,9 +29,8 @@ public class EmployeeInterface
     public async Task GetEmployeeByName()
     {
         InterfaceExtensions.ShowBeginning("Вывод сотрудника по имени");
-        var employee = new ViewEmployee();
-        var name = await InputEmployee(employee);
-        if (string.IsNullOrWhiteSpace(name))
+        var employee = await InputEmployee();
+        if (employee == null)
             return;
         InterfaceExtensions.ShowEmployee(employee);
     }
@@ -62,9 +61,8 @@ public class EmployeeInterface
     {
         FormEmployee formEmployee = new FormEmployee();
         InterfaceExtensions.ShowBeginning("Редактирование сотрудника");
-        var employee = new ViewEmployee();
-        var name = await InputEmployee(employee);
-        if (string.IsNullOrWhiteSpace(name))
+        var employee = await InputEmployee();
+        if (employee == null)
             return;
         var temp = "";
         _mapper.Map(employee, formEmployee);
@@ -105,11 +103,11 @@ public class EmployeeInterface
                     formEmployee.DateEmployment = DateOnly.Parse(Console.ReadLine());
                     break;
                 case "6":
-                    var result = await _service.UpdateEmployee(name, formEmployee);
-                    if (result == null)
-                        Console.WriteLine("Ошибка при создании сотрудника.");
+                    var result = await _service.UpdateEmployee(employee.Name, formEmployee);
+                    if (result == null || string.IsNullOrWhiteSpace(result.Name))
+                        Console.WriteLine("Ошибка при изменении сотрудника.");
                     else
-                        Console.WriteLine($"Пользователь {name} изменён");
+                        Console.WriteLine($"Пользователь {employee.Name} изменён");
                     return;
             }
         }
@@ -118,25 +116,25 @@ public class EmployeeInterface
     public async Task DeleteEmployee()
     {
         InterfaceExtensions.ShowBeginning("Удаление сотрудника");
-        var employee = new ViewEmployee();
-        var name = await InputEmployee(employee);
+        var employee = await InputEmployee();
+        var name = employee.Name;
         if (string.IsNullOrWhiteSpace(name))
             return;
         await _service.DeleteEmployee(name);
         Console.WriteLine($"Пользователь {name} удалён");
     }
     
-    private async Task<string> InputEmployee(ViewEmployee employee)
+    private async Task<ViewEmployee?> InputEmployee()
     {
-        string name;
+        var employee = new ViewEmployee();
         do
         {
             Console.Write("Введите имя пользователя: ");
-            name = Console.ReadLine();
+            var name = Console.ReadLine();
             if (name == "0")
-                return name;
+                return null;
             employee = await _service.GetEmployeeByName(name);
         } while (employee == null);
-        return name;
+        return employee;
     }
 }

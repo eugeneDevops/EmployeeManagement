@@ -12,20 +12,20 @@ public class MainInterface
     }
     public async Task StartApplication()
     {
-        Console.WriteLine("CLI приложение для управления сотрудниками в компании.");
-        Console.WriteLine("==================================");
-        Console.WriteLine("1. Добавить нового сотрудника");
-        Console.WriteLine("2. Просмотреть список сотрудников");
-        Console.WriteLine("3. Поиск сотрудника по имени");
-        Console.WriteLine("4. Обновить данные сотрудника");
-        Console.WriteLine("5. Удалить сотрудника");
-        Console.WriteLine("6. Рассчет заработной платы");
-        Console.WriteLine("0. Выход");
-        Console.WriteLine("==================================");
-        Console.Write("Введите номер операции: ");
         var resultExpession = "";
         while (resultExpession != "0")
         {
+            Console.WriteLine("CLI приложение для управления сотрудниками в компании.");
+            Console.WriteLine("==================================");
+            Console.WriteLine("1. Добавить нового сотрудника");
+            Console.WriteLine("2. Просмотреть список сотрудников");
+            Console.WriteLine("3. Поиск сотрудника по имени");
+            Console.WriteLine("4. Обновить данные сотрудника");
+            Console.WriteLine("5. Удалить сотрудника");
+            Console.WriteLine("6. Рассчет заработной платы");
+            Console.WriteLine("0. Выход");
+            Console.WriteLine("==================================");
+            Console.Write("Введите номер операции: ");
             resultExpession = Console.ReadLine();
             switch (resultExpession)
             {
